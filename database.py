@@ -18,10 +18,9 @@ def get_db_connection():
 
 def init_database():
     """Initialize the database with required tables."""
-    conn = get_db_connection()
+    db_conn = get_db_connection()
     
-    # Create books table
-    conn.execute('''
+    db_conn.execute('''
         CREATE TABLE IF NOT EXISTS books (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
@@ -32,8 +31,15 @@ def init_database():
         )
     ''')
     
-    # Create borrow_records table
-    conn.execute('''
+    db_conn.execute('''
+        CREATE TABLE IF NOT EXISTS patrons (
+            patron_id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL
+        )
+    ''')
+
+    db_conn.execute('''
         CREATE TABLE IF NOT EXISTS borrow_records (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             patron_id TEXT NOT NULL,
@@ -41,12 +47,13 @@ def init_database():
             borrow_date TEXT NOT NULL,
             due_date TEXT NOT NULL,
             return_date TEXT,
-            FOREIGN KEY (book_id) REFERENCES books (id)
+            FOREIGN KEY (book_id) REFERENCES books (id),
+            FOREIGN KEY (patron_id) REFERENCES patrons (patron_id)
         )
     ''')
     
-    conn.commit()
-    conn.close()
+    db_conn.commit()
+    db_conn.close()
 
 def add_sample_data():
     """Add sample data to the database if it's empty."""
@@ -199,3 +206,4 @@ def update_borrow_record_return_date(patron_id: str, book_id: int, return_date: 
     except Exception as e:
         conn.close()
         return False
+
