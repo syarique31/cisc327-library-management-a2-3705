@@ -1,3 +1,6 @@
+[![CI](https://github.com/syarique31/cisc327-library-management-a2-3705/actions/workflows/ci.yml/badge.svg)](https://github.com/syarique31/cisc327-library-management-a2-3705/actions/workflows/ci.yml)
+
+
 # Library Management System - Flask Web Application with SQLite
 
 ## Overview
